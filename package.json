@@ -1,0 +1,22 @@
+{
+    "name": "discord-bot-typescript-boilerplate",
+    "version": "1.0.0",
+    "main": "./dist/index.js",
+    "license": "UNLICENSED",
+    "scripts": {
+        "dev": "cross-env NODE_ENV=development env-cmd -f .env.dev tsnd --transpile-only --respawn --no-notify --ignore-watch node_modules ./src/index.ts",
+        "start": "cross-env NODE_ENV=production env-cmd -f .env node ./dist/index.js",
+        "lint": "tsc"
+    },
+    "dependencies": {
+        "cross-env": "^7.0.3",
+        "discord.js": "^14.14.1",
+        "env-cmd": "^10.1.0",
+        "mongoose": "^8.0.2"
+    },
+    "devDependencies": {
+        "@types/node": "^16.4.10",
+        "ts-node-dev": "^1.1.8",
+        "typescript": "^4.3.5"
+    }
+}
