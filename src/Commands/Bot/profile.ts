@@ -16,7 +16,7 @@ export default class ProfileCommand extends BaseCommand {
             {
                 name: 'user',
                 description: 'The user to check profile for.',
-                type: ApplicationCommandOptionType.String,
+                type: ApplicationCommandOptionType.User,
                 required: false,
             }
         ],
@@ -41,7 +41,7 @@ export default class ProfileCommand extends BaseCommand {
         const user = this.interaction.options.getUser('user') ?? this.user;
 
         const selectedUser = this.client.userManager.cache.get(user.id);
-        if (!selectedUser) return this.reject("User hasn't joined the quest yet");
+        if (!selectedUser) return this.reject("User hasn't joined the quest yet.");
 
         const unsafeSnowBallAmount = selectedUser.snowBallAmount;
         const storageSnowBallAmount = selectedUser.storage.amount;
@@ -49,35 +49,46 @@ export default class ProfileCommand extends BaseCommand {
         const totalVisitedLocations = selectedUser.locations.filter(l => l.defeated).length;
         const totalGiftsCollected = selectedUser.locations.filter(l => l.defeated).map(l => l.giftCount).reduce((a, b) => a + b, 0);
 
-        const powerUps = PowerUps.viewPowerUps(selectedUser.powerUps);
-        const elves = selectedUser.elvesCount;
-
-        const woodenSleigh = CONSTANTS.GAME.ITEM.WOODEN_SLEIGH.find(i => i.capacity === selectedUser.storage.capacity)!;
-
+        const gifts = [];
         const snowballs = [];
+        const powerUps = PowerUps.viewPowerUps(selectedUser.powerUps,false , CONSTANTS.EMOJIS.DOT+ ' ');
+        let items = PowerUps.viewItems(selectedUser.items, CONSTANTS.EMOJIS.DOT+ ' ');
+
+        const elves = selectedUser.elvesCount;
+        
+        const woodenSleigh = CONSTANTS.GAME.ITEM.WOODEN_SLEIGH.find(i => i.capacity === selectedUser.storage.capacity)!;
+        
         snowballs.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + unsafeSnowBallAmount + "`"}** ${CONSTANTS.EMOJIS.SNOWBALL}`);
-        if (storageSnowBallAmount) {
+        
+        if (selectedUser.storage.unlocked) {
             snowballs.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + storageSnowBallAmount + "/" + selectedUser.storage.capacity + "`"}** in wooden sleigh ${CONSTANTS.EMOJIS.SLEIGH}`);
             snowballs.push(`${CONSTANTS.EMOJIS.DOT} **Owns ${"`" + woodenSleigh.name + "`"}**`);
         }
-
+        
         const totalGiftCount = CONSTANTS.GAME.LOCATIONS.map(l => l.giftCount).reduce((a, b) => a + b, 0);
-
-        const gifts = [];
+        
         gifts.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + totalGiftsCollected + "/" + totalGiftCount + "`"} Gifts colleted**`);
         gifts.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + totalVisitedLocations + "/" + CONSTANTS.GAME.LOCATIONS.length + "`"} Locations visited**`);
+        gifts.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + totalAttackAttempts + "`"} Attacks attempted**`);
+        
+        
+        items+=(`\n${CONSTANTS.EMOJIS.DOT} **${"`" + selectedUser.elvesCount + "`"} Elves**`);
 
-        const items = PowerUps.viewItems(selectedUser.items);
+
+        const fields = [
+            { name: "Snowballs", value: snowballs.join('\n'), inline: true },
+            { name: "Gifts/Attack", value: gifts.join('\n'), inline: true },
+            { name: "Items", value: items.length ? items : '> No items'},
+        ];
+
+        if (selectedUser.userId === this.user.id) {
+            fields.push({ name: "Active Power Ups", value: powerUps.length ? powerUps : '> No power ups' });
+        }
 
         const embed = new EmbedBuilder();
         embed.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() });
         embed.setThumbnail(CONSTANTS.IMAGES.SANTA_GIFTS);
-        embed.setFields([
-            { name: "Snowballs", value: snowballs.join('\n'), inline: true },
-            { name: "Gifts", value: gifts.join('\n'), inline: true },
-            { name: "Items", value: items.length ? items : '> No items', inline: true },
-            { name: "Power Ups", value: powerUps.length ? powerUps : '> No power ups', inline: true },
-        ]);
+        embed.setFields(fields);
 
         embed.setColor("#8ae2ee");
         return this.reply({ embeds: [embed] });

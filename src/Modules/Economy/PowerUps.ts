@@ -38,7 +38,7 @@ export class PowerUps {
         return Math.ceil(random * (1 + powerUpPercentage));
     }
 
-    static viewPowerUps(powerUps: UserDocument['powerUps']) {
+    static viewPowerUps(powerUps: UserDocument['powerUps'],checkType = true, prefix?: string) {
         const powerUpItems = powerUps.filter((power) => power.until > new Date()).map((power) => {
             const powerUp = CONSTANTS.GAME.ITEMS.find((item) => item.id === power.id);
             return {
@@ -48,14 +48,14 @@ export class PowerUps {
                 type: powerUp?.type,
                 until: power.until,
             }
-        }).filter((power) => power.type === 'collect');
+        }).filter((power) => !checkType || power.type === 'collect' );
 
         return powerUpItems.map((power) => {
-            return `**${power.name}** - ${"`" + power.increase! * 100 + "%`"} increase for ${power.target} until <t:${((power.until.getTime())/1000).toFixed(0)}:R>`;
+            return `${prefix}**${power.name}** - ${"`" + power.increase! * 100 + "%`"} increase for ${power.target} until <t:${((power.until.getTime())/1000).toFixed(0)}:R>`;
         }).join('\n');
     }
 
-    static viewItems(items: UserDocument['items']) {
+    static viewItems(items: UserDocument['items'], prefix?: string) {
         const itemItems = items.map((item) => {
             const powerUp = CONSTANTS.GAME.ITEMS.find((i) => i.id === item.id);
             return {
@@ -66,10 +66,10 @@ export class PowerUps {
                 until: powerUp?.until,
                 count: item.count,
             }
-        }).filter((item) => item.type === 'collect');
+        }).filter((item) => item.count > 0);
 
         return itemItems.map((item) => {
-            return `**${item.name}** - ${item.type} - ${"`" + item.count + "`"}`;
+            return `${prefix}**${item.name}** - ${item.type} - ${"`" + item.count + "`"}`;
         }).join('\n');
     }
 }
