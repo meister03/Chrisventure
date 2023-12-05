@@ -16,11 +16,12 @@ export const userSchema = new Schema<IUser>({
     },
     locations: {
         type: [{   
-            monsterId: { type: String, required: true },
+            id: { type: Number, required: true },
             giftCount: { type: Number, default: 0 },
             defeated: { type: Boolean, default: false },
             prepared: { type: Boolean, default: false },
-            lastAttackedAt: { type: Date },
+            attempts: { type: Number, default: 0 },
+            lastAttackedAt: { type: Date, required: false },
         }],
     },
     items: {
@@ -58,11 +59,12 @@ export interface IUser {
         amount: number;
     };
     locations: {
-        monsterId: string;
+        id: number;
         giftCount: number;
         defeated: boolean;
         prepared: boolean;
-        lastAttackedAt: Date;
+        attempts: number;
+        lastAttackedAt?: Date;
     }[];
     items: {
         id: number;

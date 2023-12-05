@@ -72,7 +72,7 @@ export default class ProfileCommand extends BaseCommand {
         gifts.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + totalAttackAttempts + "`"} Attacks attempted**`);
         
         
-        items+=(`\n${CONSTANTS.EMOJIS.DOT} **${"`" + selectedUser.elvesCount + "`"} Elves**`);
+        items+=(`\n${CONSTANTS.EMOJIS.DOT} **Hired Elves** - ${"`" + selectedUser.elvesCount + "`"}`);
 
 
         const fields = [

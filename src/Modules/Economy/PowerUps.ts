@@ -38,7 +38,7 @@ export class PowerUps {
         return Math.ceil(random * (1 + powerUpPercentage));
     }
 
-    static viewPowerUps(powerUps: UserDocument['powerUps'],checkType = true, prefix?: string) {
+    static viewPowerUps(powerUps: UserDocument['powerUps'],checkType = true, prefix = CONSTANTS.EMOJIS.DOT + ' ') {
         const powerUpItems = powerUps.filter((power) => power.until > new Date()).map((power) => {
             const powerUp = CONSTANTS.GAME.ITEMS.find((item) => item.id === power.id);
             return {
@@ -55,7 +55,7 @@ export class PowerUps {
         }).join('\n');
     }
 
-    static viewItems(items: UserDocument['items'], prefix?: string) {
+    static viewItems(items: UserDocument['items'], prefix = CONSTANTS.EMOJIS.DOT + ' ') {
         const itemItems = items.map((item) => {
             const powerUp = CONSTANTS.GAME.ITEMS.find((i) => i.id === item.id);
             return {
