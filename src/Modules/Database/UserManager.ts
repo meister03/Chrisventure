@@ -69,6 +69,7 @@ export class UserManager {
 
     async update(user: UserDocument) {
         const updatedUser = await user.save();
-        return this.cache.set(updatedUser.userId, updatedUser);
+        this.cache.set(updatedUser.userId, updatedUser);
+        return updatedUser;
     }
 }

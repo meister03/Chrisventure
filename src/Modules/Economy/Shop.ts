@@ -17,7 +17,6 @@ export default class Shop {
         }
 
         const item = interaction.values[0];
-        console.log(item);
 
         if (item === 'attack') {
             return this.viewMenu('attack', client, interaction, user);
@@ -63,7 +62,7 @@ export default class Shop {
         useButton.setCustomId(`shopuse|${item.id}`);
         useButton.setLabel('Use');
         useButton.setStyle(ButtonStyle.Secondary);
-    /*     useButton.setDisabled((userItem?.count || 0) === 0); */
+        /*     useButton.setDisabled((userItem?.count || 0) === 0); */
 
         const buyButton = new ButtonBuilder();
         buyButton.setCustomId(`shopbuy|${item.id}`);
@@ -180,17 +179,17 @@ export default class Shop {
 
     static viewElv(interaction: StringSelectMenuInteraction, user: UserDocument) {
         const item = CONSTANTS.GAME.ITEM_TYPES.find(t => t.type === 'elv')!;
-    
+
         const elvDetails = [];
         const userDetails = [];
         elvDetails.push(`${CONSTANTS.EMOJIS.DOT} **Price:** ${"`" + this.calculateElvPrice(user) + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
         elvDetails.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs/h:** ${"`" + 10 + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
 
         const nextCollectableAt = user.lastCollectedAt ? new Date(user.lastCollectedAt.getTime() + 60 * 60 * 1000).getTime() : (new Date().getTime() - 60 * 60 * 1000);
-        
-        
+
+
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **You hired:** ${"`" + user.elvesCount + "`"} elves`);
-        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Your production per hour:** ${"`" + 10*user.elvesCount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Your production per hour:** ${"`" + 10 * user.elvesCount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Next collectable:** ${CONSTANTS.GAME.timeOf(nextCollectableAt)}`);
 
         const elvEmbed = new EmbedBuilder()
@@ -239,9 +238,9 @@ export default class Shop {
     }
 
     static calculateElvPrice(user: UserDocument) {
-        const baseProduction = 10*user.elvesCount;
-        const basePrice = baseProduction*6;
-        const price = Math.ceil(basePrice*1.1);
+        const baseProduction = 10 * user.elvesCount;
+        const basePrice = baseProduction * 6;
+        const price = Math.ceil(basePrice * 1.1);
         return price;
     }
 
@@ -322,7 +321,7 @@ export default class Shop {
         return interaction.reply({ content: `**You purchased ${"`" + item.name + "`"} for ${"`" + item.price + "`"} ${CONSTANTS.EMOJIS.SNOWBALL} | Go to the Shop to activate it!**`, ephemeral: true });
     }
 
-    static useItem(client: AdvancedClient, interaction: ButtonInteraction) {
+    static async useItem(client: AdvancedClient, interaction: ButtonInteraction) {
         const item = CONSTANTS.GAME.ITEMS.find(item => String(item.id) === String(interaction.customId.split('|')[1]));
         if (!item) return interaction.reply({ content: `**This item does not exist anymore!**`, ephemeral: true });
 
@@ -333,23 +332,32 @@ export default class Shop {
         }
 
         const userItem = user.items.find(i => i.id === item.id)!;
-        if(!userItem) return interaction.reply({ content: `**You do not own this item | Please purchase it on the Shop!**`, ephemeral: true });
+        if (!userItem) return interaction.reply({ content: `**You do not own this item | Please purchase it on the Shop!**`, ephemeral: true });
         if (userItem.count <= 0) return interaction.reply({ content: `**You do not own this item | Please purchase it on the Shop!**`, ephemeral: true });
 
         const powerUp = CONSTANTS.GAME.ITEMS.find(i => i.id === item.id)!;
         const powerUpIndex = user.powerUps.findIndex(p => p.id === powerUp.id);
 
-        if(powerUpIndex > -1 && user.powerUps[powerUpIndex].until > new Date()) {
+        if (powerUpIndex > -1 && user.powerUps[powerUpIndex].until > new Date()) {
             const time = CONSTANTS.GAME.timeOf(user.powerUps[powerUpIndex].until.getTime());
             return interaction.reply({ content: `**You already have this power up active until ${time}!**`, ephemeral: true });
         }
 
-        if (powerUpIndex > -1) {
-            user.powerUps[powerUpIndex].until = new Date(user.powerUps[powerUpIndex].until.getTime() + powerUp.until);
+        if (powerUpIndex !== -1) {
+            user.powerUps = user.powerUps.map(p => {
+                if (p.id === powerUp.id) {
+                    return {
+                        id: p.id,
+                        until: new Date(Date.now() + powerUp.until),
+                    }
+                } else {
+                    return p;
+                }
+            });
         } else {
             user.powerUps.push({
                 id: powerUp.id,
-                until: new Date(new Date().getTime() + powerUp.until),
+                until: new Date(Date.now() + powerUp.until),
             })
         }
 
@@ -364,7 +372,7 @@ export default class Shop {
             return i;
         })
 
-        const updatedUser = client.userManager.update(user);
+        const updatedUser = await client.userManager.update(user);
         if (!updatedUser) return interaction.reply({ content: `**Something went wrong while using this item!**`, ephemeral: true });
 
         return interaction.reply({ content: `**You used ${"`" + item.name + "`"} | Collect, find or attack to see the effects!**`, ephemeral: true });

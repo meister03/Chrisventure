@@ -38,13 +38,12 @@ export default class CollectCommand extends BaseCommand {
         }
 
         const findCommand = this.client.commands.cache.get('find')?.slash.mention!;
-        const fightCommand = this.client.commands.cache.get('fight')?.slash.mention!;
         const shopCommand = this.client.commands.cache.get('shop')?.slash.mention!;
 
         const snowBallAmount = PowerUps.calculateSnowBallAmount(cachedUser!);
         const powerUps = PowerUps.viewPowerUps(cachedUser!.powerUps);
 
-        const embed = new EmbedBuilder(CONSTANTS.GAME.COLLECT.embed(snowBallAmount, powerUps, findCommand, fightCommand, shopCommand));
+        const embed = new EmbedBuilder(CONSTANTS.GAME.COLLECT.embed(snowBallAmount, powerUps, findCommand, shopCommand));
         embed.setColor("#91c6b1");
 
         const updatedUser = Collect.collectSnowBall(this.client, cachedUser!, snowBallAmount).catch(e => null);

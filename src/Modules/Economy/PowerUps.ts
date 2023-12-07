@@ -31,7 +31,6 @@ export class PowerUps {
         }).filter((power) => power.type === 'collect' && power.target === 'player');
 
         const powerUpPercentage = powerUpItems.reduce((acc, curr) => acc + curr.increase!, 0);
-        console.log(powerUpPercentage);
 
         // Random number between 10-20
         const random = Math.floor(Math.random() * (20 - 10 + 1) + 10);

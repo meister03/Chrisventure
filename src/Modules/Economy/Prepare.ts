@@ -4,6 +4,13 @@ import { UserDocument } from "../Database/userSchema";
 import CONSTANTS from "../../Constants/Constants";
 
 export default class Prepare {
+
+    static estimatedSnowballsNeeded(xp: number) {
+        const minEstimatedSnowballForDefeat = Math.ceil((xp / CONSTANTS.GAME.ITEM.SNOWBALL.damage.max));
+        const maxEstimatedSnowballForDefeat = Math.ceil((xp / CONSTANTS.GAME.ITEM.SNOWBALL.damage.min));
+        return { min: minEstimatedSnowballForDefeat, max: maxEstimatedSnowballForDefeat };
+    }
+
     static isOnline(locationId: number) {
         const location = CONSTANTS.GAME.LOCATIONS.find(l => l.id === locationId);
         if (!location) return false;
@@ -47,8 +54,8 @@ export default class Prepare {
         attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Attack Attempts:** ${"`" + (userGetLocation?.attempts ?? 0) + "`"}`);
         attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Last Attack:** ${userGetLocation?.lastAttackedAt ? CONSTANTS.GAME.timeOf(userGetLocation.lastAttackedAt.getTime()) : "`Not Yet`"}`);
 
-        const minEstimatedSnowballForDefeat = Math.ceil((monster.xp / CONSTANTS.GAME.ITEM.SNOWBALL.damage.max));
-        const maxEstimatedSnowballForDefeat = Math.ceil((monster.xp / CONSTANTS.GAME.ITEM.SNOWBALL.damage.min));
+        const minEstimatedSnowballForDefeat = this.estimatedSnowballsNeeded(monster.xp).min;
+        const maxEstimatedSnowballForDefeat = this.estimatedSnowballsNeeded(monster.xp).max;
 
         const defeatInfo = [];
         defeatInfo.push(`${CONSTANTS.EMOJIS.DOT} **Estimated Snowballs Needed:** ${"`" + minEstimatedSnowballForDefeat + "-" + maxEstimatedSnowballForDefeat + "`"}`);
@@ -211,10 +218,8 @@ export default class Prepare {
         const location = CONSTANTS.GAME.LOCATIONS.find(l => l.id === parseInt(locationId));
         if (!location) return interaction.reply({ content: '**Location does not exit anymore!**', ephemeral: true });
 
-        const allLocationsDefeated = user?.locations.every(l => l.defeated === true) && user?.locations.length === CONSTANTS.GAME.LOCATIONS.length;
-        if (allLocationsDefeated) {
-            return interaction.reply({ content: '**You already defeated all monsters in the locations!**', ephemeral: true });
-        }
+        const locationDefeated = await this.checkIfLocationIsDefeated(client, interaction, user, parseInt(locationId));
+        if (locationDefeated) return;
 
         // @ts-ignore
         const storageExists = await Prepare.checkIfStorageExists(client, interaction, user);
@@ -228,6 +233,8 @@ export default class Prepare {
 
         if (isNaN(amount) || amount < 0 || amount > (totalSnowballAmount)) {
             return interaction.reply({ content: `**Please enter a valid amount of snowballs between ${"`" + 0 + "`"} and ${"`" + totalSnowballAmount + "`"} (your balance)!\n> ${infoMessage}**`, ephemeral: true });
+        } else if(amount >= user.storage.capacity) {
+            return interaction.reply({ content: `**Please enter a valid amount of snowballs between ${"`" + 0 + "`"} and ${"`" + user.storage.capacity + "`"} (your wooden sleigh capacity)!\n> ${infoMessage}**`, ephemeral: true });
         } else {
             await Prepare.setStorageAmount(client, user, amount, parseInt(locationId));
             return interaction.reply({ content: `**You are prepared for the battle with ${"`" + amount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}\n> ${infoMessage}**`, ephemeral: true });
@@ -240,6 +247,14 @@ export default class Prepare {
             await interaction.reply({ content: '**Please buy a wooden sleigh in the shop with ' + shopCommand + ' to take your snowballs to the Battle!**', ephemeral: true });
             return false;
         } else return true;
+    }
+
+    static async checkIfLocationIsDefeated(client: AdvancedClient, interaction: ButtonInteraction | ModalSubmitInteraction, user: UserDocument, locationId: number) {
+        const location = user.locations.find(l => l.id === locationId);
+        if (location?.defeated) {
+            await interaction.reply({ content: '**You already defeated this monster in this location!**', ephemeral: true });
+            return true;
+        } else return false;
     }
 
 

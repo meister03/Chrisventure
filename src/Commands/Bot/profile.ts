@@ -41,6 +41,7 @@ export default class ProfileCommand extends BaseCommand {
         const user = this.interaction.options.getUser('user') ?? this.user;
 
         const selectedUser = this.client.userManager.cache.get(user.id);
+        
         if (!selectedUser) return this.reject("User hasn't joined the quest yet.");
 
         const unsafeSnowBallAmount = selectedUser.snowBallAmount;

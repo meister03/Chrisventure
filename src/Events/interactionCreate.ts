@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, Interaction } from "discord.js";
 import { AdvancedClient } from "../shared";
 import Shop from "../Modules/Economy/Shop";
 import Prepare from "../Modules/Economy/Prepare";
+import Attack from "../Modules/Economy/Attack";
 
 const interactionCreate = async (client: AdvancedClient, interaction: Interaction) => {
     //console.log(`[Interaction] ${interaction.user.tag} triggered an interaction.`);
@@ -26,6 +27,8 @@ const interactionCreate = async (client: AdvancedClient, interaction: Interactio
             Shop.useItem(client, interaction);
         } else if(interaction.customId.includes("prepare|")) {
             Prepare.executePrepare(client, interaction);
+        } else if(interaction.customId.includes("attack|")) {
+            Attack.execute(client, interaction);
         }
     } else if(interaction.isModalSubmit()) {
         if(interaction.customId.includes("preparemodal|")) {

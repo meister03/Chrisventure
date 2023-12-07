@@ -101,7 +101,6 @@ const COLLECT = {
         snowBallAmount: number,
         powerUps: string,
         findCommand: string,
-        fightCommand: string,
         shopCommand: string
     ): EmbedBuilder['data'] => ({
         title: "Collected Blizzard Balls",
@@ -113,8 +112,7 @@ const COLLECT = {
                         ? `\n**__Following power-ups are activated:__**\n${powerUps}\n\n`
                         : "To give the elves a power-up. Buy some from the **" + shopCommand + ".**\n\n"
                 ),
-                `Venture into the winter realm and ${findCommand} for hidden snowball caches `,
-                `or unleash your competitive spirit by challenging other fellow players through a ${fightCommand}.`
+                `Venture into the winter realm and ${findCommand} for hidden snowball caches. `,
 
             ].join(""),
         image: {
@@ -124,7 +122,7 @@ const COLLECT = {
 }
 
 const FIND = {
-    embed: (snowBallAmount: number, powerUps: string, shopCommand: string, collectCommand: string, fightCommand: string): EmbedBuilder['data'] => {
+    embed: (snowBallAmount: number, powerUps: string, shopCommand: string, collectCommand: string): EmbedBuilder['data'] => {
         const randomFindLocations = [
             "Uncovered a stash of {{amount}} glittering snowballs!",
             "Discovered {{amount}} magical snowballs in the frosty hideout.",
@@ -159,8 +157,7 @@ const FIND = {
                             ? `\n**__Following power-ups are activated:__**\n${powerUps}\n\n`
                             : "To get some power-ups. Buy some from the " + shopCommand + ".\n\n"
                     ),
-                    "Collect more snowballs from the hardworking elves by using " + collectCommand + " " +
-                    "or unleash your competitive spirit by challenging other fellow players through a " + fightCommand + "."
+                    "Collect more snowballs from the hardworking elves by using " + collectCommand + ".",
                 ].join(""),
             thumbnail: {
                 url: IMAGES.ITEMS_SNOWBALL
@@ -785,10 +782,49 @@ const LOCATIONS = [
     { id: 17, day: 24, name: "SouthPole", monsterId: 17, giftCount: 1000 },
 ];
 
-LOCATIONS.reduce((acc, location) => {
-    location.giftCount += acc;
-    return location.giftCount;
-}, 0);
+const DEFEAT_MESSAGES = [
+    `Oh no! The fearsome {{monster}} has triumphed over Santa, the elves, and you at the magical {{location}}. We lost {{snowballs}} snowballs in the battle, and only {{gifts}} gifts remain.`,
+    `Disaster struck at the enchanting {{location}} as the mighty {{monster}} overcame Santa, the elves, and you. We lost {{snowballs}} snowballs, and a mere {{gifts}} gifts survive.`,
+    `The once-jubilant atmosphere at {{location}} now bears witness to the defeat of Santa, the elves, and you by the formidable {{monster}}. We suffered a loss of {{snowballs}} snowballs, leaving only {{gifts}} gifts.`,
+    `Alas! The {{monster}} has bested us all at the festive {{location}}. Our snowballs, {{snowballs}} in total, were not enough to withstand the creature's might. Now, only {{gifts}} gifts are left.`,
+    `In the snowy land of {{location}}, a chilling defeat unfolded as the menacing {{monster}} conquered Santa, the elves, and you. {{snowballs}} snowballs were lost, and only {{gifts}} gifts remain.`,
+    `The joyful echoes at {{location}} have faded as the ominous {{monster}} emerged victorious, defeating Santa, the elves, and you. We mourn the loss of {{snowballs}} snowballs, with only {{gifts}} gifts left.`,
+    `At the heart of {{location}}, the legendary battle unfolded, resulting in the defeat of Santa, the elves, and you by the relentless {{monster}}. {{snowballs}} snowballs were sacrificed, leaving just {{gifts}} gifts.`,
+    `A gloom has befallen {{location}} as the ferocious {{monster}} prevailed over Santa, the elves, and you. We lost {{snowballs}} snowballs, and only {{gifts}} gifts remain.`,
+    `The magical aura of {{location}} shattered as the relentless {{monster}} conquered Santa, the elves, and you. We lost {{snowballs}} snowballs, leaving a meager {{gifts}} gifts in its wake.`,
+    `The festive joy at {{location}} turned to sorrow as the formidable {{monster}} emerged triumphant, defeating Santa, the elves, and you. {{snowballs}} snowballs were lost, leaving only {{gifts}} gifts.`,
+    `The enchanting {{location}} witnessed the defeat of Santa, the elves, and you by the fearsome {{monster}}. {{snowballs}} snowballs were lost, and only {{gifts}} gifts remain.`,
+    `The magical aura of {{location}} dimmed as the powerful {{monster}} overcame Santa, the elves, and you. {{snowballs}} snowballs were lost in the battle, with only {{gifts}} gifts left.`,
+    `Oh, the holiday spirit is dimmed at {{location}} as the mighty {{monster}} emerged victorious, defeating Santa, the elves, and you. We lost {{snowballs}} snowballs, and only {{gifts}} gifts remain.`,
+    `At the festive gathering at {{location}}, a shadow cast by the {{monster}} loomed large, defeating Santa, the elves, and you. {{snowballs}} snowballs were sacrificed, leaving only {{gifts}} gifts.`,
+    `The joyous celebration at {{location}} took a dark turn as the {{monster}} proved invincible, conquering Santa, the elves, and you. We lost {{snowballs}} snowballs, and only {{gifts}} gifts stand.`,
+    `In the wintry landscape of {{location}}, a tale of defeat unfolded as the relentless {{monster}} conquered Santa, the elves, and you. {{snowballs}} snowballs were lost, with only {{gifts}} gifts remaining.`,
+    `Alas, the festive merriment at {{location}} was shattered by the victory of the {{monster}}, defeating Santa, the elves, and you. {{snowballs}} snowballs were lost, leaving only {{gifts}} gifts.`,
+    `The magical enchantment at {{location}} was broken as the formidable {{monster}} emerged victorious, defeating Santa, the elves, and you. {{snowballs}} snowballs were lost, with only {{gifts}} gifts surviving the onslaught.`,
+    `In the realm of {{location}}, the jubilant holiday spirit turned to despair as the {{monster}} defeated Santa, the elves, and you. {{snowballs}} snowballs were lost, and only {{gifts}} gifts remain.`,
+];
+
+const WIN_MESSAGES = [
+    `Hooray! The heroic efforts against the mighty {{monster}} at the enchanting {{location}} have prevailed. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are safe.`,
+    `In a stunning turn of events at the magical {{location}}, the {{monster}} was defeated, and Santa, the elves, and you emerged victorious. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `Cheers echo through the festive air at {{location}} as the {{monster}} succumbs to defeat. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are secure.`,
+    `Victory is ours! The fearsome {{monster}} was vanquished at the heart of {{location}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are intact.`,
+    `The holiday spirit triumphs! The {{monster}} was no match for the resilience of Santa, the elves, and you at the wintry {{location}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `At the snowy battlefield of {{location}}, the relentless {{monster}} was defeated, and joyous celebrations ensue. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are accounted for.`,
+    `A wave of relief washes over {{location}} as the heroic team emerges victorious against the {{monster}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are safe.`,
+    `In the jubilant aftermath at {{location}}, the {{monster}} bows to the triumphant team of Santa, the elves, and you. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `The magical aura of {{location}} resonates with triumph as the {{monster}} is defeated. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are secure.`,
+    `Oh, what a glorious day at {{location}}! The mighty {{monster}} has been vanquished, and victory belongs to Santa, the elves, and you. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `At the heart of {{location}}, the {{monster}} met its match, and joyous celebrations ensue. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are intact.`,
+    `Rejoice! The {{monster}} was no match for the bravery at the magical {{location}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `The holiday cheer prevails as the {{monster}} is defeated at the enchanting {{location}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are secure.`,
+    `A collective sigh of relief echoes through {{location}} as the victorious team emerges from the battle against the {{monster}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `In the wintry landscape of {{location}}, the {{monster}} is vanquished, and the holiday spirit reigns. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are accounted for.`,
+    `Cheers of triumph fill the air at {{location}} as the {{monster}} is defeated, and victory belongs to Santa, the elves, and you. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `At the festive gathering at {{location}}, the {{monster}} bows down to the triumphant team. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are safe.`,
+    `The jubilant holiday spirit prevails as the {{monster}} is defeated at the snowy battlefield of {{location}}. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts remain.`,
+    `A wave of joy sweeps through {{location}} as the victorious team emerges triumphant. Only {{snowballs}} snowballs were used, and all {{gifts}} gifts are secure.`,
+];
 
 
 function timeOf(time: number) {
@@ -813,9 +849,9 @@ const CONSTANTS = {
         SHOP,
         MONSTERS,
         LOCATIONS,
-        /*       END,
-              MONSTERS,
-              CARDS */
+        DURATION: 30 * 1000, // 30
+        DEFEAT_MESSAGES,
+        WIN_MESSAGES
     }
 };
 

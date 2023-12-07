@@ -40,13 +40,12 @@ export default class FindCommand extends BaseCommand {
 
 
         const collectCommand = this.client.commands.cache.get('collect')?.slash.mention!;
-        const fightCommand = this.client.commands.cache.get('fight')?.slash.mention!;
         const shopCommand = this.client.commands.cache.get('shop')?.slash.mention!;
 
         const snowBallAmount = PowerUps.findSnowBallAmount(cachedUser!);
         const powerUps = PowerUps.viewPowerUps(cachedUser!.powerUps);
 
-        const embed = new EmbedBuilder(CONSTANTS.GAME.FIND.embed(snowBallAmount, powerUps, shopCommand, collectCommand, fightCommand));
+        const embed = new EmbedBuilder(CONSTANTS.GAME.FIND.embed(snowBallAmount, powerUps, shopCommand, collectCommand));
         embed.setColor("#178e9e");
 
         const updatedUser = Collect.collectFindSnowBall(this.client, cachedUser!, snowBallAmount).catch(e => null);
