@@ -89,6 +89,7 @@ export default class ProfileCommand extends BaseCommand {
         const embed = new EmbedBuilder();
         embed.setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL() });
         embed.setThumbnail(CONSTANTS.IMAGES.SANTA_GIFTS);
+        embed.setFooter({text: "Once you have enough snowballs, use /prepare to prepare for the battle"})
         embed.setFields(fields);
 
         embed.setColor("#8ae2ee");

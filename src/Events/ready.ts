@@ -7,7 +7,7 @@ const ready = async (client: AdvancedClient) => {
     await client.userManager.load();
 
     client.commands.load({slash: true});
-    client.user.setActivity("for Gifts", { type: ActivityType.Watching });
+    client.user.setActivity("for /start", { type: ActivityType.Watching });
 }
 
 export default ready;

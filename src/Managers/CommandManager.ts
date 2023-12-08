@@ -85,7 +85,6 @@ class CommandManager {
     async onInteraction(interaction: ChatInputCommandInteraction) {
         const commandName = interaction.commandName;
         const command = this.cache.get(commandName)!;
-        console.log(commandName);
 
         // @ts-ignore
         const baseCommand = new command(

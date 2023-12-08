@@ -44,6 +44,7 @@ export default class CollectCommand extends BaseCommand {
         const powerUps = PowerUps.viewPowerUps(cachedUser!.powerUps);
 
         const embed = new EmbedBuilder(CONSTANTS.GAME.COLLECT.embed(snowBallAmount, powerUps, findCommand, shopCommand));
+        embed.setFooter({text: "Once you have enough snowballs, use /prepare to prepare for the battle"})
         embed.setColor("#91c6b1");
 
         const updatedUser = Collect.collectSnowBall(this.client, cachedUser!, snowBallAmount).catch(e => null);

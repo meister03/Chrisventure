@@ -46,6 +46,7 @@ export default class FindCommand extends BaseCommand {
         const powerUps = PowerUps.viewPowerUps(cachedUser!.powerUps);
 
         const embed = new EmbedBuilder(CONSTANTS.GAME.FIND.embed(snowBallAmount, powerUps, shopCommand, collectCommand));
+        embed.setFooter({text: "Once you have enough snowballs, use /prepare to prepare for the battle"})
         embed.setColor("#178e9e");
 
         const updatedUser = Collect.collectFindSnowBall(this.client, cachedUser!, snowBallAmount).catch(e => null);

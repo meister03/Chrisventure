@@ -84,10 +84,10 @@ export class BaseCommand {
     }
 
     reject(content: string, reason?: string){
-        const cross = '<:modcross:810573772146212874>';
+        const cross = '<:modcross:1182433747199594597>';
         reason = reason ? " | " + reason : "";
         const rejectembed = new EmbedBuilder();
-        rejectembed.setDescription(cross + content + reason)
+        rejectembed.setDescription("**" + cross + content + reason + "**")
         rejectembed.setColor('#d32f2f')
         rejectembed.toJSON();
         return this.reply({ embeds: [rejectembed] })
