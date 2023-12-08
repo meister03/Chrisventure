@@ -119,6 +119,27 @@ const COLLECT = {
             url: IMAGES.SANTA_SNOWBALL,
         },
     }),
+    ELV_MESSAGES:  [
+        `Elves are hard at work wrapping presents. Check back in {{time}} for more magical snowballs.`,
+        `Elves are tinkering with toy trains. Return in {{time}} for a flurry of snowballs.`,
+        `The workshop is buzzing with elf activity. Come back in {{time}} for enchanting snowballs.`,
+        `Elves are conducting reindeer training. Rejoin in {{time}} for a blizzard of snowballs.`,
+        `Santa's workshop is a whirlwind of elf preparations. Return in {{time}} for magical snowballs.`,
+        `The North Pole is bustling with elf holiday cheer. Check back in {{time}} for a storm of snowballs.`,
+        `Elves are busy testing the wooden sleigh. Come back in {{time}} for more magical snowballs.`,
+        `Elves are creating snowflake decorations. Rejoin in {{time}} for a flurry of snowballs.`,
+        `The workshop is alive with the sound of elf laughter. Return in {{time}} for magical snowballs.`,
+        `Elves are busy choreographing a holiday dance. Check back in {{time}} for more snowballs.`,
+        `Santa's workshop is currently a hive of festive elf creativity. Rejoin in {{time}} for a blizzard of snowballs.`,
+        `Elves are crafting magical ornaments. Check back in {{time}} for enchanting snowballs.`,
+        `Elves are busy testing toy rockets. Rejoin in {{time}} for a flurry of snowballs.`,
+        `The workshop is a flurry of glitter and glue, with the elves at the helm. Return in {{time}} for magical snowballs.`,
+        `Elves are inventing new holiday treats. Check back in {{time}} for more magical snowballs.`,
+        `Elves in the workshop paint a canvas of festive colors. Rejoin in {{time}} for a storm of snowballs.`,
+        `The North Pole is a hub of elf present-wrapping joy. Return in {{time}} for magical snowballs.`,
+        `Elves are hard at work perfecting gift bows. Check back in {{time}} for more snowballs.`,
+        `Elves are testing toy parachutes. Rejoin in {{time}} for magical snowballs.`,
+    ]
 }
 
 const FIND = {
@@ -163,7 +184,34 @@ const FIND = {
                 url: IMAGES.ITEMS_SNOWBALL
             },
         }
-    }
+    },
+    FIND_MESSAGES: [
+        `A snowstorm has swept through the area. Return in {{time}} for more finding snowballs.`,
+        `The snowball stash is frozen solid. Check back in {{time}} for another chance to find snowballs.`,
+        `A mischievous snowman has hidden all the snowballs. Return in {{time}} for more finding snowballs.`,
+        `The polar bears are having a snowball party. Rejoin in {{time}} for another chance to find snowballs.`,
+        `A friendly Yeti is guarding the snowball cache. Return in {{time}} for more finding snowballs.`,
+        `The snowball fields are temporarily closed for a winter festival. Check back in {{time}} for another chance.`,
+        `A flock of arctic penguins is marching through the snowball zone. Return in {{time}} for more finding snowballs.`,
+        `The snowballs are taking a nap. Rejoin in {{time}} for another chance to find snowballs.`,
+        `A snowflake blizzard is in progress. Return in {{time}} for more finding snowballs.`,
+        `A magical ice enchantment has hidden the snowballs. Check back in {{time}} for another chance to find snowballs.`,
+        `The snowball radar is on a coffee break. Return in {{time}} for more finding snowballs.`,
+        `A snow owl is delivering mail in the snowball zone. Rejoin in {{time}} for another chance to find snowballs.`,
+        `A group of snow angels is having a picnic in the snowball fields. Check back in {{time}} for another chance.`,
+        `The snowball search area is undergoing an igloo renovation. Return in {{time}} for more finding snowballs.`,
+        `A mischievous snow fox has hidden all the snowballs. Rejoin in {{time}} for another chance to find snowballs.`,
+        `The snowball inventory is undergoing a frosty audit. Return in {{time}} for more finding snowballs.`,
+        `A pack of snow wolves is howling in the snowball zone. Check back in {{time}} for another chance.`,
+        `An ice wizard has cast a temporary invisibility spell on the snowballs. Rejoin in {{time}} for another chance.`,
+        `A snow dragon is taking a nap on the snowball stash. Check back in {{time}} for another chance.`,
+        `The snowball fields are closed for a frosty dance party. Return in {{time}} for more finding snowballs.`,
+        `A snow unicorn is guarding the entrance to the snowball zone. Rejoin in {{time}} for another chance.`,
+        `A snowstorm wizard is conjuring a blizzard in the snowball zone. Check back in {{time}} for another chance.`,
+        `The snowball path is temporarily paved with gingerbread. Return in {{time}} for more finding snowballs.`,
+        `A snow king has declared a royal decree, closing the snowball fields. Rejoin in {{time}} for another chance.`,
+        `A snow genie has granted the snowballs three wishes, so they're taking a break. Check back in {{time}} for another chance.`,
+    ]    
 }
 
 // @TODO - Add more snowballs

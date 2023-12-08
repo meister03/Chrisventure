@@ -54,16 +54,14 @@ export default class ProfileCommand extends BaseCommand {
         const snowballs = [];
         const powerUps = PowerUps.viewPowerUps(selectedUser.powerUps,false , CONSTANTS.EMOJIS.DOT+ ' ');
         let items = PowerUps.viewItems(selectedUser.items, CONSTANTS.EMOJIS.DOT+ ' ');
-
-        const elves = selectedUser.elvesCount;
-        
+      
         const woodenSleigh = CONSTANTS.GAME.ITEM.WOODEN_SLEIGH.find(i => i.capacity === selectedUser.storage.capacity)!;
         
         snowballs.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + unsafeSnowBallAmount + "`"}** ${CONSTANTS.EMOJIS.SNOWBALL}`);
         
         if (selectedUser.storage.unlocked) {
             snowballs.push(`${CONSTANTS.EMOJIS.DOT} **${"`" + storageSnowBallAmount + "/" + selectedUser.storage.capacity + "`"}** in wooden sleigh ${CONSTANTS.EMOJIS.SLEIGH}`);
-            snowballs.push(`${CONSTANTS.EMOJIS.DOT} **Owns ${"`" + woodenSleigh.name + "`"}**`);
+            snowballs.push(`${CONSTANTS.EMOJIS.DOT} **Owns ${"`" + woodenSleigh.name.replace("Unlock", "Basic")  + "`"}**`);
         }
         
         const totalGiftCount = CONSTANTS.GAME.LOCATIONS.map(l => l.giftCount).reduce((a, b) => a + b, 0);

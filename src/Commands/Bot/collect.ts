@@ -34,7 +34,10 @@ export default class CollectCommand extends BaseCommand {
         if(cachedUser?.lastCollectedAt) {
             const diff = Date.now() - cachedUser.lastCollectedAt.getTime();
             const time = CONSTANTS.GAME.timeOf(cachedUser.lastCollectedAt.getTime() + 60*60*1000);
-            if(diff < 60*60*1000) return this.reject("Elves are on a cocoa break. Return in " + time + " for more magical snowballs.");
+            if(diff < 60*60*1000) {
+                const randomMessage = CONSTANTS.GAME.COLLECT.ELV_MESSAGES[Math.floor(Math.random() * CONSTANTS.GAME.COLLECT.ELV_MESSAGES.length)];
+                return this.reject(randomMessage.replace("{{time}}", time));
+            }
         }
 
         const findCommand = this.client.commands.cache.get('find')?.slash.mention!;

@@ -35,7 +35,10 @@ export default class FindCommand extends BaseCommand {
         if (cachedUser?.lastSearchedAt) {
             const diff = Date.now() - cachedUser.lastSearchedAt.getTime();
             const time = CONSTANTS.GAME.timeOf(cachedUser.lastSearchedAt.getTime() + 60 * 60 * 1000);
-            if (diff < 60 * 60 * 1000) return this.reject("A blizzard is coming. Return in " + time + " for more finding snowballs.");
+            if (diff < 60 * 60 * 1000) {
+                const randomMessage = CONSTANTS.GAME.FIND.FIND_MESSAGES[Math.floor(Math.random() * CONSTANTS.GAME.FIND.FIND_MESSAGES.length)];
+                return this.reject(randomMessage.replace("{{time}}", time));
+            }
         }
 
 

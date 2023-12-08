@@ -134,6 +134,14 @@ export default class Shop {
 
         const item = CONSTANTS.GAME.ITEM_TYPES.find(t => t.type === 'storage')!;
 
+        const currentWoodenSleigh = CONSTANTS.GAME.ITEM.WOODEN_SLEIGH.find(sleigh => sleigh.capacity === user.storage.capacity)!;
+
+        const userInfo = [];
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Storage Capacity:** ${"`" + user.storage.amount + "/" + user.storage.capacity + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Current Sleigh:** ${"`" + (user.storage.unlocked ? currentWoodenSleigh.name.replace("Unlock", "Basic")  : "Not Unlocked") + "`"}`);
+
+
         const storageEmbed = new EmbedBuilder()
         storageEmbed.setTitle(item.name);
         storageEmbed.setDescription(item.description + '\n\n' + storageOptions.join('\n'));
@@ -188,20 +196,20 @@ export default class Shop {
         const userDetails = [];
         elvDetails.push(`${CONSTANTS.EMOJIS.DOT} **Price:** ${"`" + this.calculateElvPrice(user) + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
         elvDetails.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs/h:** ${"`" + 10 + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
+        elvDetails.push(`${CONSTANTS.EMOJIS.DOT} **Current production/h:** ${"`" + 10 * user.elvesCount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
 
         const nextCollectableAt = user.lastCollectedAt ? new Date(user.lastCollectedAt.getTime() + 60 * 60 * 1000).getTime() : (new Date().getTime() - 60 * 60 * 1000);
 
-
+        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);	
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **You hired:** ${"`" + user.elvesCount + "`"} elves`);
-        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Your production per hour:** ${"`" + 10 * user.elvesCount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Next collectable:** ${CONSTANTS.GAME.timeOf(nextCollectableAt)}`);
 
         const elvEmbed = new EmbedBuilder()
         elvEmbed.setTitle("Hire " + item.name);
         elvEmbed.setDescription(item.description);
         elvEmbed.addFields([
-            { name: 'Your Elves', value: userDetails.join('\n'), inline: true },
-            { name: 'Recruit Elf', value: elvDetails.join('\n'), inline: true },
+            { name: 'User Info', value: userDetails.join('\n'), inline: true },
+            { name: 'Elves Info', value: elvDetails.join('\n'), inline: true },
         ])
         elvEmbed.setColor('#49aa9f');
         elvEmbed.setImage(CONSTANTS.IMAGES.SANTA_SNOWBALL);
