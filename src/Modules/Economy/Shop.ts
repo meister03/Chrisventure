@@ -100,7 +100,7 @@ export default class Shop {
 
         const embed = new EmbedBuilder()
         embed.setTitle(`${itemType.name}`);
-        embed.setDescription(`${itemType.description}\n\n**__User Info:__**${userInfo.join("\n")}\n\n**__Your Items:__** ${userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"}`)
+        embed.setDescription(`${itemType.description}\n\n**__User Info:__**\n${userInfo.join("\n")}\n\n**__Your Items:__** ${userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"}`)
         embed.addFields([
             { name: 'Shop', value: shopItems.join('\n') }
         ])
@@ -144,7 +144,7 @@ export default class Shop {
 
         const storageEmbed = new EmbedBuilder()
         storageEmbed.setTitle(item.name);
-        storageEmbed.setDescription(item.description + '\n\n' + storageOptions.join('\n'));
+        storageEmbed.setDescription(item.description + "\n**__User Info:__**\n" + userInfo.join("\n") + '\n\n' + storageOptions.join('\n'));
         storageEmbed.setColor('#ef9b5a');
         storageEmbed.setThumbnail(item.image);
 
