@@ -94,14 +94,16 @@ export default class Shop {
 
         const userInfo = [];
         userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
-        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs Production/h:** ${"`" + (user.elvesCount || 0)*10 + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs Production/h:** ${"`" + (user.elvesCount || 0) * 10 + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
 
         const itemType = CONSTANTS.GAME.ITEM_TYPES.find(t => t.type === type)!;
 
         const embed = new EmbedBuilder()
         embed.setTitle(`${itemType.name}`);
-        embed.setDescription(`${itemType.description}\n\n**__User Info:__**\n${userInfo.join("\n")}\n\n**__Your Items:__** ${userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"}`)
+        embed.setDescription(`${itemType.description}`)
         embed.addFields([
+            { name: 'User', value: userInfo.join('\n') , inline: true},
+            { name: 'Your Items', value:  (userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"), inline: true},
             { name: 'Shop', value: shopItems.join('\n') }
         ])
         embed.setColor('#8ae2ee');
@@ -139,12 +141,12 @@ export default class Shop {
         const userInfo = [];
         userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
         userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Storage Capacity:** ${"`" + user.storage.amount + "/" + user.storage.capacity + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
-        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Current Sleigh:** ${"`" + (user.storage.unlocked ? currentWoodenSleigh.name.replace("Unlock", "Basic")  : "Not Unlocked") + "`"}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Current Sleigh:** ${"`" + (user.storage.unlocked ? currentWoodenSleigh.name.replace("Unlock", "Basic") : "Not Unlocked") + "`"}`);
 
 
         const storageEmbed = new EmbedBuilder()
         storageEmbed.setTitle(item.name);
-        storageEmbed.setDescription(item.description + "\n**__User Info:__**\n" + userInfo.join("\n") + '\n\n' + storageOptions.join('\n'));
+        storageEmbed.setDescription(item.description + "\n\n**__User Info:__**\n" + userInfo.join("\n") + '\n\n' + storageOptions.join('\n'));
         storageEmbed.setColor('#ef9b5a');
         storageEmbed.setThumbnail(item.image);
 
@@ -200,7 +202,7 @@ export default class Shop {
 
         const nextCollectableAt = user.lastCollectedAt ? new Date(user.lastCollectedAt.getTime() + 60 * 60 * 1000).getTime() : (new Date().getTime() - 60 * 60 * 1000);
 
-        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);	
+        userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"} ${CONSTANTS.EMOJIS.SNOWBALL}`);
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **You hired:** ${"`" + user.elvesCount + "`"} elves`);
         userDetails.push(`${CONSTANTS.EMOJIS.DOT} **Next collectable:** ${CONSTANTS.GAME.timeOf(nextCollectableAt)}`);
 
@@ -305,7 +307,7 @@ export default class Shop {
             return interaction.reply({ content: `**Please start your journey with ${startCommand}!**`, ephemeral: true })
         }
 
-        if(user.snowBallAmount < item.price) return interaction.reply({ content: `**You are missing ${"`" + item.price + "`"} ${CONSTANTS.EMOJIS.SNOWBALL} to purchase this item!**`, ephemeral: true });
+        if (user.snowBallAmount < item.price) return interaction.reply({ content: `**You are missing ${"`" + item.price + "`"} ${CONSTANTS.EMOJIS.SNOWBALL} to purchase this item!**`, ephemeral: true });
 
         const userItem = user.items.find(i => i.id === item.id);
         if (userItem) {

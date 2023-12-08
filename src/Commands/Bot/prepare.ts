@@ -30,13 +30,21 @@ export default class PrepareCommand extends BaseCommand {
 
         this.checkIfGuildProfileExists();
 
-        const cachedUser = await this.client.userManager.find(this.user.id)!;
+        const cachedUser = await this.client.userManager.find(this.user.id);
+
+        if(!cachedUser) return this.reject(`Please use the ${startCommand} command to start your journey`);
 
         const allLocationsDefeated = cachedUser?.locations.every(l => l.defeated === true) && cachedUser?.locations.length === CONSTANTS.GAME.LOCATIONS.length;
 
+        let nextLocationId = CONSTANTS.GAME.LOCATIONS[0].id;
 
-        const nextLocationId = cachedUser?.locations.filter(l => l.defeated === false).map(x => x.id)
-            .sort((a, b) => a - b)?.[0] ?? (allLocationsDefeated ? (CONSTANTS.GAME.LOCATIONS.length - 1) : 0);
+        for (let i = 0; i < CONSTANTS.GAME.LOCATIONS.length; i++) {
+            const findLocation = cachedUser.locations.find(l => l.id === CONSTANTS.GAME.LOCATIONS[i].id);
+            if (!findLocation || findLocation?.defeated === false) {
+                nextLocationId = CONSTANTS.GAME.LOCATIONS[i].id;
+                break;
+            }
+        }
 
         return Prepare.embed(this.client, this.interaction, cachedUser!, nextLocationId, true);
     }
