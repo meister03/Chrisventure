@@ -24,7 +24,7 @@ export default class FindCommand extends BaseCommand {
         super(client, data)
     }
     async execute() {
-        if (!this.guild) return this.reject("Please join a server to use this command");
+        if (!this.interaction.guildId) return this.reject("Please join a server to use this command");
 
         const profileReady = this.checkIfUserStartedJourney();
         if (!profileReady) return false;

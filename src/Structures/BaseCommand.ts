@@ -51,7 +51,7 @@ export class BaseCommand {
             userId: this.user.id,
             avatar: this.user.avatarURL()!,
             displayName: this.user.displayName,
-            guildId: this.guild?.id!,
+            guildId: this.interaction.guildId!,
             handle: this.user.username,
         });
         return exists;

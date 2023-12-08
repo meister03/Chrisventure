@@ -21,7 +21,7 @@ export default class StartCommand extends BaseCommand {
         super(client, data)
     }
     async execute() {
-        if(!this.guild) return this.reject("Please join a server to use this command");
+        if(!this.interaction.guildId) return this.reject("Please join a server to use this command");
 
         let cachedProfile = await this.client.userManager.find(this.user.id);
         
@@ -30,7 +30,7 @@ export default class StartCommand extends BaseCommand {
                 userId: this.user.id,
                 avatar: this.user.avatarURL()!,
                 displayName: this.user.displayName,
-                guildId: this.guild?.id!,
+                guildId: this.interaction.guildId!,
                 handle: this.user.username,
             })
         } else await this.checkIfGuildProfileExists();

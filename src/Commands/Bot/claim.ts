@@ -21,7 +21,7 @@ export default class ClaimCommand extends BaseCommand {
         super(client, data)
     }
     async execute() {
-        if(!this.guild) return this.reject("Please join a server to use this command");
+        if(!this.interaction.guildId) return this.reject("Please join a server to use this command");
 
         const startCommand = this.client.commands.cache.get('start')?.slash.mention!;
 

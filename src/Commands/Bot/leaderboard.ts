@@ -38,7 +38,7 @@ export default class LeaderboardCommand extends BaseCommand {
         super(client, data)
     }
     async execute() {
-        if (!this.guild) return this.reject("Please join a server to use this command");
+        if (!this.interaction.guildId) return this.reject("Please join a server to use this command");
 
         const profileReady = this.checkIfUserStartedJourney();
         if (!profileReady) return false;
@@ -51,7 +51,7 @@ export default class LeaderboardCommand extends BaseCommand {
         const users: { name: string, id: string, giftCount: number, snowBallAmount: number }[] = [];
 
         let globalUsers = [...this.client.userManager.cache.values()];
-        if (type === "server" && this.guild) globalUsers = globalUsers.filter(u => u.guildIds.includes(this.guild!.id));
+        if (type === "server" && this.interaction.guildId) globalUsers = globalUsers.filter(u => u.guildIds.includes(this.interaction.guildId!));
 
         for (const user of globalUsers) {
             users.push({
