@@ -25,7 +25,8 @@ export default class InviteCommand extends BaseCommand {
         embed.setTitle("Save Christmas with Santa 🎅✨");
         embed.setDescription(
             `**[Join the mission to save Christmas!\nGather friends, spread cheer, and embark on the festive journey together and retrieve all gifts from Frostbite the Frozen.]` +
-            `(https://discord.com/api/oauth2/authorize?client_id=${this.client.application.id}&permissions=274878187520&scope=bot%20applications.commands)**`
+            //`(https://discord.com/api/oauth2/authorize?client_id=${this.client.application.id}&permissions=274878187520&scope=bot%20applications.commands)**`
+            `(https://discord.com/api/oauth2/authorize?client_id=1180582435486970027&permissions=0&scope=applications.commands)**`
         )
         embed.setColor("#178e9e");
         embed.setImage(CONSTANTS.IMAGES.SANTA_SNOWBALL);

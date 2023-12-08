@@ -39,18 +39,21 @@ export default class Prepare {
 
         const userGetLocation = cachedUser?.locations.find(l => l.id === locationId);
 
+        let attackableStr = (this.getDate(locationId) < Date.now() ? "`YES`" : CONSTANTS.GAME.timeOf(this.getDate(locationId)));
+        if(userGetLocation?.defeated) attackableStr = "`DEFEATED`";
+
         const locationInfo = [];
         locationInfo.push(`${CONSTANTS.EMOJIS.DOT} **Location:** ${"`" + nextLocation.name + "`"}`);
         // locationInfo.push(`**Difficulty:** ${nextLocation.difficulty}`); @TODO add candle emoji
         locationInfo.push(`${CONSTANTS.EMOJIS.DOT} **Located Gifts:** ${"`" + nextLocation.giftCount + "`"}`);
-        locationInfo.push(`${CONSTANTS.EMOJIS.DOT} **Attackable: ** ${(this.getDate(locationId) < Date.now() ? "`YES`" : CONSTANTS.GAME.timeOf(this.getDate(locationId)))}`);
+        locationInfo.push(`${CONSTANTS.EMOJIS.DOT} **Attackable: ** ${attackableStr}`);
 
         const monsterInfo = [];
         monsterInfo.push(`${CONSTANTS.EMOJIS.DOT} **Name:** ${"`" + monster.shortName + "`"}`);
         monsterInfo.push(`${CONSTANTS.EMOJIS.DOT} **Health:** ${"`" + monster.xp}HP` + "`");
 
         const attackInfo = [];
-        attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Gifts retrieved:** ${"`" + (allLocationsDefeated ? "YES" : "NO") + "`"}`);
+        attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Gifts retrieved:** ${"`" + (userGetLocation?.defeated ? "YES" : "NO") + "`"}`);
         attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Attack Attempts:** ${"`" + (userGetLocation?.attempts ?? 0) + "`"}`);
         attackInfo.push(`${CONSTANTS.EMOJIS.DOT} **Last Attack:** ${userGetLocation?.lastAttackedAt ? CONSTANTS.GAME.timeOf(userGetLocation.lastAttackedAt.getTime()) : "`Not Yet`"}`);
 

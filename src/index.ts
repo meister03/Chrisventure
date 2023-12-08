@@ -24,5 +24,5 @@ connectToDatabase(MONGO_URL);
 
 
 process.on("unhandledRejection", (err) => {
-    console.error(err);
+    console.log(err);
 });

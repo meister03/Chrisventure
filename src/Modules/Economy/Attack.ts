@@ -44,7 +44,7 @@ export default class Attack {
         // Open Collector 
         const collector = new InteractionCollector(client, {
             time: CONSTANTS.GAME.DURATION + 6000,
-            filter: (i) => i.customId.includes('|live|' + interaction.user.id),
+            filter: (i) => (i.customId !== undefined && i.customId !== null && i.customId.includes('|live|' + interaction.user.id)) || false,
         });
 
         const minSnowballPerSecond = Math.ceil(snowballAmount / ((CONSTANTS.GAME.DURATION / 1000) - 20));
