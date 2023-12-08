@@ -92,11 +92,15 @@ export default class Shop {
             shopItems.push(`> ${item.shortDescription}`)
         });
 
+        const userInfo = [];
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + user.snowBallAmount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs Production/h:** ${"`" + (user.elvesCount || 0)*10 + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+
         const itemType = CONSTANTS.GAME.ITEM_TYPES.find(t => t.type === type)!;
 
         const embed = new EmbedBuilder()
         embed.setTitle(`${itemType.name}`);
-        embed.setDescription(`${itemType.description}\n\n**__Your Items:__** ${userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"}`)
+        embed.setDescription(`${itemType.description}\n\n**__User Info:__**${userInfo.join("\n")}\n\n**__Your Items:__** ${userItems.length ? "\n" + userItems.join('\n') : "\n> No Items"}`)
         embed.addFields([
             { name: 'Shop', value: shopItems.join('\n') }
         ])
@@ -292,6 +296,8 @@ export default class Shop {
             const startCommand = client.commands.cache.get('start')?.slash.mention;
             return interaction.reply({ content: `**Please start your journey with ${startCommand}!**`, ephemeral: true })
         }
+
+        if(user.snowBallAmount < item.price) return interaction.reply({ content: `**You are missing ${"`" + item.price + "`"} ${CONSTANTS.EMOJIS.SNOWBALL} to purchase this item!**`, ephemeral: true });
 
         const userItem = user.items.find(i => i.id === item.id);
         if (userItem) {

@@ -217,12 +217,14 @@ const WOODEN_SLEIGH = [
 
 const SHOP = {
     MENU: {
-        embed: (): EmbedBuilder['data'] => ({
+        embed: (userInfo: string): EmbedBuilder['data'] => ({
             title: "Santa's Workshop",
             description:
                 [
                     "Acquire potent Power-Up Portions, discover mystical Items, recruit additional Christmas Elves, " +
                     "or unlock the ability to upgrade your trusty Wooden Sleigh, transforming it into a snowball-hoarding marvel\n\n",
+                    "**__User Info:__**\n",
+                    userInfo + "\n\n",
                     "**__Available Items:__**\n",
                     ITEM_TYPES.map((item) => {
                         return [
@@ -234,6 +236,9 @@ const SHOP = {
             thumbnail: {
                 url: IMAGES.ITEMS_PORTIONS,
             },
+            footer: {
+                text: "Check your items with the /profile command"
+            }
         }),
         component: (userId: string): ActionRowBuilder<StringSelectMenuBuilder> => {
             const components = new ActionRowBuilder<StringSelectMenuBuilder>();

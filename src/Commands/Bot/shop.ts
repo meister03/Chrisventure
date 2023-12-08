@@ -29,7 +29,11 @@ export default class ShopCommand extends BaseCommand {
         await this.checkIfGuildProfileExists();
         const cachedUser = await this.client.userManager.find(this.user.id);
 
-        const embed = new EmbedBuilder(CONSTANTS.GAME.SHOP.MENU.embed());
+        const userInfo = [];
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs:** ${"`" + cachedUser?.snowBallAmount + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs Production/h:** ${"`" + (cachedUser?.elvesCount || 0)*10 + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+
+        const embed = new EmbedBuilder(CONSTANTS.GAME.SHOP.MENU.embed(userInfo.join('\n')));
         embed.setColor("#8ae2ee");
 
         const componentRow = CONSTANTS.GAME.SHOP.MENU.component(cachedUser?.userId!);
