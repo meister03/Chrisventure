@@ -236,7 +236,7 @@ export default class Prepare {
 
         if (isNaN(amount) || amount < 0 || amount > (totalSnowballAmount)) {
             return interaction.reply({ content: `**Please enter a valid amount of snowballs between ${"`" + 0 + "`"} and ${"`" + totalSnowballAmount + "`"} (your balance)!\n> ${infoMessage}**`, ephemeral: true });
-        } else if(amount >= user.storage.capacity) {
+        } else if(amount > user.storage.capacity) {
             return interaction.reply({ content: `**Please enter a valid amount of snowballs between ${"`" + 0 + "`"} and ${"`" + user.storage.capacity + "`"} (your wooden sleigh capacity)!\n> ${infoMessage}**`, ephemeral: true });
         } else {
             await Prepare.setStorageAmount(client, user, amount, parseInt(locationId));

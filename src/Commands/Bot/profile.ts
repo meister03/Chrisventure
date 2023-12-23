@@ -46,7 +46,7 @@ export default class ProfileCommand extends BaseCommand {
 
         const unsafeSnowBallAmount = selectedUser.snowBallAmount;
         const storageSnowBallAmount = selectedUser.storage.amount;
-        const totalAttackAttempts = selectedUser.totalAttackAttempts;
+        const totalAttackAttempts = selectedUser.locations.map(l => l.attempts).reduce((a, b) => a + b, 0);
         const totalVisitedLocations = selectedUser.locations.filter(l => l.defeated).length;
         const totalGiftsCollected = selectedUser.locations.filter(l => l.defeated).map(l => l.giftCount).reduce((a, b) => a + b, 0);
 

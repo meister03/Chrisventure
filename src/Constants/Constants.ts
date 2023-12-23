@@ -39,8 +39,8 @@ const IMAGES = {
 
 const SNOWBALL = {
     damage: {
-        min: 7,
-        max: 22,
+        min: 5,
+        max: 17,
     }
 }
 
@@ -255,12 +255,12 @@ const ITEM_TYPES = [
 ]
 
 const WOODEN_SLEIGH = [
-    { id: 0, capacity: 25, price: 50, name: "Unlock Wooden Sleigh", description: "A basic Wooden Sleigh with a modest storage capacity of 25 snowballs." },
-    { id: 1, capacity: 50, price: 125, name: "Frosty Cruiser", description: "A basic Wooden Sleigh with a modest storage capacity of 50 snowballs." },
-    { id: 2, capacity: 100, price: 225, name: "Snowflake Hauler", description: "Upgraded Wooden Sleigh, now with an increased storage capacity of 100 snowballs." },
-    { id: 3, capacity: 200, price: 420, name: "Icicle Transporter", description: "Advanced Wooden Sleigh, boasting a storage capacity of 200 snowballs." },
-    { id: 4, capacity: 425, price: 955, name: "Blizzard Conveyance", description: "Mastercrafted Wooden Sleigh, offering an impressive storage of 425 snowballs." },
-    { id: 5, capacity: 600, price: 1500, name: "Aurora Carrier", description: "Legendary Wooden Sleigh to transport a massive amount of 600 snowballs." }
+    { id: 0, capacity: 50, price: 50, name: "Unlock Wooden Sleigh", description: "A basic Wooden Sleigh with a modest storage capacity of 50 snowballs." },
+    { id: 1, capacity: 100, price: 250, name: "Frosty Cruiser", description: "A basic Wooden Sleigh with a modest storage capacity of 100 snowballs." },
+    { id: 2, capacity: 175, price: 300, name: "Snowflake Hauler", description: "Upgraded Wooden Sleigh, now with an increased storage capacity of 175 snowballs." },
+    { id: 3, capacity: 300, price: 500, name: "Icicle Transporter", description: "Advanced Wooden Sleigh, boasting a storage capacity of 300 snowballs." },
+    { id: 4, capacity: 900, price: 1000, name: "Blizzard Conveyance", description: "Mastercrafted Wooden Sleigh, offering an impressive storage of 900 snowballs." },
+    { id: 5, capacity: 2000, price: 1750, name: "Aurora Carrier", description: "Legendary Wooden Sleigh to transport a massive amount of 2000 snowballs." }
 ]
 
 const SHOP = {
@@ -370,12 +370,12 @@ const ITEMS = [
         name: "Elfusion Ephemera",
         description: "Activate the Elfusion Ephemera, and witness the manifestation of duplicated elves, amplifying your workforce twofold. " +
             "Combine it strategically with the Snowflurry Elixir for an unrivaled surge in both elves and finding snowballs, ushering in a blizzard of efficiency. " +
-            "Effect of the Elfusion Ephemera will last for 24 hours.",
+            "Effect of the Elfusion Ephemera will last for 3 hours.",
         shortDescription: "Witness the manifestation of duplicated elves, amplifying your workforce twofold.",
         target: 'elf',
-        price: 75,
+        price: 125,
         increase: 1,
-        until: 24 * 60 * 60 * 1000,
+        until: 3 * 60 * 60 * 1000,
         image: IMAGES.ITEMS_POWERUP_DUPLICATE,
     },
     {
@@ -787,7 +787,7 @@ const MONSTERS = [
         id: 17,
         name: "Frostbite the Frozen, the Icy Wizard",
         shortName: "Frostbite the Frozen",
-        xp: 10000,
+        xp: 20000,
         image: IMAGES.MONSTER_LEADER,
         shortDescription: "Icy Wizard, Frostbite the Frozen, once loyal, now bitter. Defeat him with enchanted snowballs and special tactics!",
         description: "Once a loyal elf, Frostbite the Frozen turned sorcerer, fueled by bitterness. " +

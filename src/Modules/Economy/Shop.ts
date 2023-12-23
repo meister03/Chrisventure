@@ -82,7 +82,7 @@ export default class Shop {
         user.items.filter(item => {
             const powerUp = CONSTANTS.GAME.ITEMS.find(i => i.id === item.id);
             return powerUp?.type === type;
-        }).filter(item => item.count >= 0).forEach(item => {
+        }).filter(item => item.count >= 0).sort((a,b) => a.id - b.id).forEach(item => {
             const powerUp = CONSTANTS.GAME.ITEMS.find(i => i.id === item.id)!;
             userItems.push(`**${CONSTANTS.EMOJIS.DOT} ${powerUp.name} - ${"`" + item.count + "`"}**`)
         });

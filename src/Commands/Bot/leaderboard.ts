@@ -72,7 +72,7 @@ export default class LeaderboardCommand extends BaseCommand {
             const snowballs = u.snowBallAmount;
             const gifts = u.giftCount;
             return `**${rank}. ${u.name} - ${"`" + snowballs + "`"} ${CONSTANTS.EMOJIS.SNOWBALL} | ${"`" + gifts + "`"} 🎁**`;
-        });
+        }).slice(0, 15);
 
         const embed = new EmbedBuilder()
             .setTitle("Merry Leaderboard")

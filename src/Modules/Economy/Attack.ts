@@ -47,7 +47,7 @@ export default class Attack {
             filter: (i) => (i.customId !== undefined && i.customId !== null && i.customId.includes('|live|' + interaction.user.id)) || false,
         });
 
-        const minSnowballPerSecond = Math.ceil(snowballAmount / ((CONSTANTS.GAME.DURATION / 1000) - 20));
+        const minSnowballPerSecond = Math.ceil(snowballAmount / ((CONSTANTS.GAME.DURATION / 1000) - 15));
         const maxSnowballPerSecond = Math.ceil(snowballAmount / ((CONSTANTS.GAME.DURATION / 1000) - 10));
         let embedUpdateTrigger = false;
         let monsterHp = monsterInfo.xp;
@@ -199,6 +199,19 @@ export default class Attack {
 
     /** Set prepares to false and empties wooden sleigh */
     static async resetLocation(client: AdvancedClient, user: UserDocument, locationId: number) {
+
+        const checkIfLocationExists = user.locations.some((l) => l.id === locationId);
+        if (!checkIfLocationExists) {
+            user.locations.push({
+                id: locationId,
+                giftCount: 0,
+                attempts: 0,
+                defeated: false,
+                lastAttackedAt: new Date(),
+                prepared: false,
+            });
+        }
+
         // Find and update location
         user.locations = user.locations.map((l) => {
             if (l.id === locationId) {
@@ -228,6 +241,7 @@ export default class Attack {
         user.locations = user.locations.map((l) => {
             if (l.id === locationId) {
                 l.defeated = true;
+                l.giftCount = CONSTANTS.GAME.LOCATIONS.find((l) => l.id === locationId)!.giftCount;
             }
             return l;
         });
@@ -258,7 +272,7 @@ export default class Attack {
         const userInfo = [];
         userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Snowballs left:** ${"`" + Math.max(snowBallsLeft, 0) + "`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
         userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Seconds left:** ${"`" + Math.min(secondsLeft, 30) + "`"}s`);
-        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Winning chance:** ${"`" + winningPercentage.toFixed(2) + "%`"}${CONSTANTS.EMOJIS.SNOWBALL}`);
+        userInfo.push(`${CONSTANTS.EMOJIS.DOT} **Winning chance:** ${"`" + winningPercentage.toFixed(2) + "%`"}`);
 
 
         const monsterInfo = [];

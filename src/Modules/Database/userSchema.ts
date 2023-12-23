@@ -3,9 +3,9 @@ import { Schema, model } from "mongoose";
 export const userSchema = new Schema<IUser>({
     userId: {type: String, required: true},
     guildIds: {type: [String], required: true},
-    avatar: {type: String, required: true},
+    avatar: {type: String, required: false},
     displayName: {type: String, required: true},
-    handle: {type: String, required: true},
+    handle: {type: String, required: false},
     snowBallAmount: {type: Number, default: 0},
     elvesCount: {type: Number, default: 5},
     /* Wooden Sleigh */
