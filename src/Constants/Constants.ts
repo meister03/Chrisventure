@@ -45,12 +45,12 @@ const SNOWBALL = {
 }
 
 const EMOJIS = {
-    DOT: '<:dot:1181282197588693103>',
-    SNOWBALL: '<:snowballemoji:1181292277755302008>',
-    ELV: '<:elvemoji:1181298122694086686>',
-    ATTACK: '<:attackemoji:1181297626575028375>',
-    COLLECT: '<:collectemoji:1181297792078061689>',
-    SLEIGH: '<:sleighemoji:1181297953407778866>',
+    DOT: '<:dot:1314946637965168640>',
+    SNOWBALL: '<:snowball:1314947456093392927>',
+    ELV: '<:elv:1314947546057277544>',
+    ATTACK: '<:attack:1314947486820859934>',
+    COLLECT: '<:collect:1314947509290008576>',
+    SLEIGH: '<:sleigh:1314947530143826040>',
 }
 
 const START = {
